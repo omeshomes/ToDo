@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-var dummyData = ['water the plants', 'eat the birds', 'drink the clam juice', 'achieve world domination'];
+var dummyData = [{taskText: 'water the plants', completed: false},
+                {taskText: 'eat the birds', completed: false},
+                {taskText: 'drink the clam juice', completed: false},
+                {taskText: 'achieve world domination', completed: true}];
 
 class TodoList extends React.Component {
   render() {
     return(
       <ul>
-        {dummyData.map((string) => (<Todo task={string} key={string}/>))}
+        {dummyData.map((task) => (<Todo task={task} key={task.taskText}/>))}
       </ul>
     )
   }
@@ -18,7 +21,7 @@ class Todo extends React.Component {
     return(
       <li>
         <button type="button">X</button>
-        {this.props.task}
+        {(this.props.task.completed) ? (<strike>{this.props.task.taskText}</strike>) : (this.props.task.taskText)}
       </li>
     )
   }
