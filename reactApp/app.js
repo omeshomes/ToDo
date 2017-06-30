@@ -1,5 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-ReactDOM.render(<p>NOOO!</p>,
-   document.getElementById('root'));
+var dummyData = ['water the plants', 'eat the birds', 'drink the clam juice', 'achieve world domination'];
+
+class TodoList extends React.Component {
+  render() {
+    return(
+      <ul>
+        {dummyData.map((string) => (<Todo task={string} key={string}/>))}
+      </ul>
+    )
+  }
+}
+
+class Todo extends React.Component {
+  render() {
+    return(
+      <li>
+        <button type="button">X</button>
+        {this.props.task}
+      </li>
+    )
+  }
+}
+
+
+ReactDOM.render(<TodoList />, document.getElementById('root'));
