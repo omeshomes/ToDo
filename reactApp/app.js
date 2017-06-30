@@ -24,5 +24,27 @@ class Todo extends React.Component {
   }
 }
 
+class InputLine extends React.Component {
+  render() {
+    return (
+      <div>
+        <input type="text" placeholder="task" />
+        <button type="button">Add todo</button>
+      </div>
+    )
+  }
+}
 
-ReactDOM.render(<TodoList />, document.getElementById('root'));
+class TodoApp extends React.Component {
+  render() {
+    return(
+      <div>
+        <InputLine />
+        <TodoList />
+      </div>
+    )
+  }
+}
+
+
+ReactDOM.render(<TodoApp />, document.getElementById('root'));
