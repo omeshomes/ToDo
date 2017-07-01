@@ -3,11 +3,6 @@ import InputLine from './InputLine.js';
 import TodoList from './TodoList.js';
 import axios from 'axios';
 
-var dummyData = [{taskText: 'water the plants', completed: false},
-                {taskText: 'eat the birds', completed: false},
-                {taskText: 'drink the clam juice', completed: false},
-                {taskText: 'achieve world domination', completed: true}];
-
 const dbUrl = "http://localhost:3000/db";
 
 class TodoApp extends React.Component {
@@ -19,7 +14,14 @@ class TodoApp extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({todos: dummyData});
+    axios.get(dbUrl + '/all')
+      .then((data) => {
+        console.log(data);
+        this.setState({todos: data.data});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   addTodo(task) {
@@ -27,13 +29,11 @@ class TodoApp extends React.Component {
       .then((response) => {
         this.setState({ todos: this.state.todos.concat(response.data)});
         console.log(response);
-        console.log(this.state.todos);
+        // console.log(this.state.todos);
       })
       .catch(function (error) {
         console.log(error);
       });
-      // dummyData.push({taskText: task, completed: false});
-      // this.setState({todos: dummyData});
   }
 
   removeTodo(index) {
@@ -41,9 +41,24 @@ class TodoApp extends React.Component {
     this.setState({todos: dummyData});
   }
 
-  toggleTodo(index) {
-    dummyData[index].completed = !dummyData[index].completed;
-    this.setState({todos: dummyData});
+  toggleTodo(id) {
+    // dummyData[index].completed = !dummyData[index].completed;
+    // this.setState({todos: dummyData});
+    console.log(this.state.todos);
+    var index = this.state.todos.findIndex((todo) => {
+      return todo._id === id;
+    })
+    //send the toggled props to axios
+    axios.post(dbUrl + '/toggle', {id: id, completed: !this.state.todos[index].completed})
+      .then((todo) => {
+        // console.log('todo', todo.data);
+        // this.setState({todos: this.state.todos.slice(0,index)
+        //   .concat(todo.data)
+        //   .concat(this.state.todos.slice(index+1))});
+        var temp = this.state.todos;
+        temp[index].completed = !temp[index].completed;
+        this.setState({todos: temp});
+      })
   }
 
   render() {
